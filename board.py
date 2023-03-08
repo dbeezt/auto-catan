@@ -44,12 +44,16 @@ class Board:
         else: 
             number = self.retrieve_random_and_pop(self.numbers)
         return resource, number
+
+    def build_structure(self, location, structure):
+        location = structure
         
 # Might need half hex tile for ports/edges
 class Hex:
     def __init__(self, resource, number):
         self.resource = resource
         self.number = number
+        # instead of nesw, should it be coord-based?
         self.n = ""
         self.ne = ""
         self.se = ""
@@ -57,11 +61,48 @@ class Hex:
         self.sw = ""
         self.nw = ""
 
+    def build(self, location, structure):
+        pass
+
 # this needs to be a separate file maybe
 class Structure:
-    def __init__(self, type, owner):
-        self.type = type
+    def __init__(self, structure, owner):
+        self.structure = structure
+        # owner can be players or bank (for port)?
         self.owner = owner
+
+# when building structures, need to check if there are any parallel hex edges to update simultaneously
+
+class Port(Structure):
+    def __init__(self, resource):
+        self.resource = resource
+        super(Port, self).__init__('port', self.owner)
+
+    def trade(self, resource, amount):
+        if self.resource == resource:
+            print("trading")
+        else:
+            print("not trading")
+
+        return (resource/2)
+
+class Settlement(Structure):
+    def __init__(self, owner):
+        # {"wood": 1, "grain": 1, "brick": 1, "sheep": 1}
+        self.owner = owner
+        super(Settlement, self).__init__('settlement', self.owner)
+
+class City(Structure):
+    def __init__(self, owner):
+        # {"grain": 2, "stone": 3}
+        self.owner = owner
+        super(City, self).__init__('city', self.owner)
+
+class Road(Structure):
+    def __init__(self, owner):
+        # {"wood": 1, "brick": 1}
+        self.owner = owner
+        super(Port, self).__init__('road', self.owner)
 
 
 board = Board()
@@ -72,6 +113,9 @@ print(f"""
            |{board.map[3][0].resource[:2]}|{board.map[3][1].resource[:2]}|{board.map[3][2].resource[:2]}|{board.map[3][3].resource[:2]}|
              |{board.map[4][0].resource[:2]}|{board.map[4][1].resource[:2]}|{board.map[4][2].resource[:2]}|
     """)
-# print(Board().map)
+
+# board.build_structure(board.map[0][0].n, City('dan'))
+board.map[0][0].n = City('dan')
+print(board.map[0][0].n.structure)
 
 

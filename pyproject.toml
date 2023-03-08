@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "auto-catan"
+version = "0.0.0"
+description = "Catan Board Game (Auto)"
+authors = ["Daniel Brereton <dbrereton1995@gmail.com>"]
+readme = "README.md"
+packages = [{include = "auto_catan"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
